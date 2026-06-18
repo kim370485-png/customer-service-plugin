@@ -1,6 +1,6 @@
 <?xml version='5.3' encoding='UTF-8'?>
 <gupdate xmlns='http://www.google.com/update2/response' protocol='2.0'>
-  <app appid='cmibplmpbmaocmjmmpbjnocmecboiffj'>
+  <app appid='njjdclibfaedfofiphakngdnglelphje'>
     <updatecheck
       codebase='https://raw.githubusercontent.com/jesse-tzx/customer-service-plugin/main/extension.crx'
       version='5.3' />
