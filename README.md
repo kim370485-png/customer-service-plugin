@@ -12,7 +12,7 @@
 
 ### Windows
 
-1. 下载 [install.reg](./install.reg)
+1. 下载 [install-user.reg](./install-user.reg)（不需要管理员权限）
 2. **双击运行** → 确认导入注册表
 3. **重启 Chrome**（完全退出，包括托盘图标）
 4. 打开 `chrome://extensions/` 确认插件已出现 ✅
@@ -63,7 +63,8 @@ bash install-mac.sh
 | `src/` | 插件源码（飞猪客服工具箱） |
 | `extension.crx` | 打包后的插件文件（由 publish.sh 生成并提交） |
 | `updates.xml` | Chrome 更新清单，托管在 GitHub raw URL |
-| `install.reg` | Windows 注册表文件，同事双击安装 |
+| `install-user.reg` | Windows 注册表文件（推荐，不需要管理员权限） |
+| `install.reg` | Windows 注册表文件（需要管理员权限） |
 | `publish.sh` | 一键发布脚本 |
 
 ---
@@ -72,14 +73,14 @@ bash install-mac.sh
 
 ### 1. 配置 Extension ID
 
-`updates.xml` 和 `install.reg` 中有 `__EXTENSION_ID__` 占位符，需要替换：
+`updates.xml`、`install-user.reg` 和 `install.reg` 中有 `__EXTENSION_ID__` 占位符，需要替换：
 
 1. Chrome → `chrome://extensions/` → 开发者模式 → 加载已解压的扩展 → 选 `src/`
 2. 记下插件 ID
 3. 替换：
 
 ```bash
-sed -i '' 's/__EXTENSION_ID__/你的真实ID/g' updates.xml install.reg
+sed -i '' 's/__EXTENSION_ID__/你的真实ID/g' updates.xml install-user.reg install.reg
 ```
 
 ### 2. 生成 key.pem
