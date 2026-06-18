@@ -35,6 +35,13 @@ if [ -z "$VERSION" ]; then
   info "从 manifest.json 读取版本: $VERSION"
 fi
 
+# 同步 manifest.json 版本号（确保 .crx 和 updates.xml 版本一致）
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' "s|\"version\": \"[0-9][0-9.]*\"|\"version\": \"$VERSION\"|" src/manifest.json
+else
+  sed -i "s|\"version\": \"[0-9][0-9.]*\"|\"version\": \"$VERSION\"|" src/manifest.json
+fi
+
 # ── 打包 .crx ─────────────────────────────────────────────
 
 CHROME_PATH=""
@@ -87,7 +94,7 @@ ok "updates.xml 已更新 → version=$VERSION"
 
 cp build/extension.crx extension.crx
 
-git add updates.xml extension.crx
+git add updates.xml extension.crx src/manifest.json
 git commit -m "chore: bump to v$VERSION" 2>/dev/null || true
 git push origin main
 ok "已推送到 GitHub"
