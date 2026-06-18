@@ -1,0 +1,22 @@
+{
+  "name": "chrome-extension-publisher",
+  "description": "一键发布 Chrome 浏览器插件到 GitHub，自动打包并分发给所有用户。支持 OpenClaw、QoderWork、Claude Code 等多种 Agent 平台。",
+  "version": "1.0.0",
+  "author": {
+    "name": "jesse-tzx",
+    "url": "https://github.com/jesse-tzx"
+  },
+  "homepage": "https://github.com/jesse-tzx/customer-service-plugin",
+  "repository": "https://github.com/jesse-tzx/customer-service-plugin",
+  "license": "MIT",
+  "category": "development",
+  "keywords": [
+    "chrome extension",
+    "publish",
+    "github actions",
+    "auto pack",
+    "crx",
+    "distribution",
+    "enterprise policy"
+  ]
+}
