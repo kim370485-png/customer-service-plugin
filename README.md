@@ -1,6 +1,6 @@
 # 飞猪客服工具箱 - 安装与更新指南
 
-> 当前版本：v5.9 | 扩展 ID：`phfpldkfckdkigbhemjhekdpijgbbbop`
+> 当前版本：v5.9 | 扩展 ID：`fmoadjiolfncoiahhmmjmgdoniiagohj`
 
 ---
 
@@ -12,7 +12,7 @@
 
 1. 下载以下两个文件到**同一个文件夹**（比如桌面）：
    - [install-windows.bat](./install-external/install-windows.bat)（右键 → 另存为）
-   - [phfpldkfckdkigbhemjhekdpijgbbbop.json](./install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json)（右键 → 另存为）
+   - [fmoadjiolfncoiahhmmjmgdoniiagohj.json](./install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json)（右键 → 另存为）
 2. 双击运行 `install-windows.bat`
 3. **完全退出 Chrome**：
    - 关闭所有 Chrome 窗口
@@ -77,7 +77,7 @@ cd customer-service-plugin
 |------|------|------|
 | Windows 安装后扩展未出现 | Chrome 未完全退出 | 任务管理器结束所有 chrome.exe 进程后重开 |
 | Mac 双击 .command 被拦截 | macOS Gatekeeper 安全限制 | 右键点击文件 → 选择「打开」→ 再点「打开」 |
-| 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `phfpldkfckdkigbhemjhekdpijgbbbop` 加入白名单 |
+| 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `fmoadjiolfncoiahhmmjmgdoniiagohj` 加入白名单 |
 | 版本不更新 | Chrome 缓存 | `chrome://extensions/` → 手动点"更新" |
 
 ---
@@ -91,7 +91,7 @@ cd customer-service-plugin
 | `updates.xml` | Chrome 自动更新清单 |
 | `install.mobileconfig` | Mac 安装描述文件 |
 | `install-external/install-windows.bat` | Windows 安装脚本 |
-| `install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json` | Windows 扩展配置 |
+| `install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json` | Windows 扩展配置 |
 | `install-user.reg` | Windows 注册表（备选方案，需要企业环境） |
 | `install.reg` | Windows 注册表（备选方案，需要管理员权限） |
 | `publish.sh` | 本地一键发布脚本 |

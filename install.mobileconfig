@@ -7,7 +7,7 @@
         <dict>
             <key>ExtensionInstallForcelist</key>
             <array>
-                <string>phfpldkfckdkigbhemjhekdpijgbbbop;https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/updates.xml</string>
+                <string>fmoadjiolfncoiahhmmjmgdoniiagohj;https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/updates.xml</string>
             </array>
             <key>PayloadDescription</key>
             <string>飞猪客服工具箱 Chrome 插件自动安装</string>

@@ -8,7 +8,7 @@ TARGET="$HOME/Library/Application Support/Google/Chrome/External Extensions"
 mkdir -p "$TARGET"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-cp "$SCRIPT_DIR/phfpldkfckdkigbhemjhekdpijgbbbop.json" "$TARGET/"
+cp "$SCRIPT_DIR/fmoadjiolfncoiahhmmjmgdoniiagohj.json" "$TARGET/"
 
 if [ $? -eq 0 ]; then
     echo "✓ 安装成功！"

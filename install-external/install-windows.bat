@@ -9,7 +9,7 @@ if not exist "%TARGET%" (
     mkdir "%TARGET%"
 )
 
-copy /Y "%~dp0phfpldkfckdkigbhemjhekdpijgbbbop.json" "%TARGET%\" >nul
+copy /Y "%~dp0fmoadjiolfncoiahhmmjmgdoniiagohj.json" "%TARGET%\" >nul
 
 if %errorlevel% equ 0 (
     echo ✓ 安装成功！

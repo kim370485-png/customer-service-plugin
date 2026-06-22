@@ -7,7 +7,7 @@ echo "正在安装飞猪客服工具箱..."
 echo ""
 
 TARGET="$HOME/Library/Application Support/Google/Chrome/External Extensions"
-JSON_FILE="$TARGET/phfpldkfckdkigbhemjhekdpijgbbbop.json"
+JSON_FILE="$TARGET/fmoadjiolfncoiahhmmjmgdoniiagohj.json"
 
 mkdir -p "$TARGET"
 
