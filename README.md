@@ -1,144 +1,70 @@
-# 飞猪客服工具箱 - Chrome 内部分发
+# 飞猪客服工具箱 - 安装与更新指南
 
-内部客服系统 Chrome 浏览器插件（飞猪客服工具箱 v5.6），基于 Chrome Enterprise Policy 自动分发。
-
-## 仓库地址
-
-`https://github.com/kim370485-png/customer-service-plugin`
+> 当前版本：v5.9 | 扩展 ID：`phfpldkfckdkigbhemjhekdpijgbbbop`
 
 ---
 
-## 客服小二安装（一次性）
+## 客服小二安装（一次性操作）
+
+安装后，后续所有版本更新由 Chrome 自动完成，无需再操作。
 
 ### Windows
 
-**方式一：注册表（推荐）**
-
-1. 下载 [install-user.reg](./install-user.reg)（不需要管理员权限）
-2. **双击运行** → 确认导入注册表
-3. **重启 Chrome**（完全退出，包括托盘图标）
-4. 打开 `chrome://extensions/` 确认插件已出现 ✅
-
-**方式二：外部扩展（不需要注册表）**
-
-1. 下载 [install-windows.bat](./install-external/install-windows.bat) 和 [phfpldkfckdkigbhemjhekdpijgbbbop.json](./install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json)
-2. **双击运行** `install-windows.bat`
-3. **重启 Chrome**（完全退出，包括托盘图标）
-4. Chrome 会弹出确认框 → 点击"启用扩展程序"
-5. 打开 `chrome://extensions/` 确认插件已出现 ✅
+1. 下载以下两个文件到**同一个文件夹**（比如桌面）：
+   - [install-windows.bat](./install-external/install-windows.bat)（右键 → 另存为）
+   - [phfpldkfckdkigbhemjhekdpijgbbbop.json](./install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json)（右键 → 另存为）
+2. 双击运行 `install-windows.bat`
+3. **完全退出 Chrome**：
+   - 关闭所有 Chrome 窗口
+   - 右下角任务栏托盘区域，找到 Chrome 图标，右键 → 退出
+4. 重新打开 Chrome
+5. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
+6. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
 
 ### Mac
 
-**方式一：描述文件（推荐）**
-
-1. 下载 [install.mobileconfig](./install.mobileconfig)
-2. **双击运行** → 系统设置会自动打开 → 点击「安装」
-3. **重启 Chrome**（⌘Q 完全退出）
-4. 打开 `chrome://extensions/` 确认插件已出现 ✅
-
-**方式二：终端脚本**
-
-```bash
-# 下载并运行
-curl -o install-mac.sh https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/install-mac.sh
-bash install-mac.sh
-```
-
-**方式三：外部扩展（不需要描述文件）**
-
-```bash
-# 下载并运行
-curl -o install-external-mac.sh https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/install-external/install-mac.sh
-bash install-external-mac.sh
-```
-
-然后重启 Chrome，Chrome 会弹出确认框 → 点击"启用扩展程序"。
-
-后续版本更新 Chrome 自动完成，不需要再操作。
+1. 下载 [install.mobileconfig](./install.mobileconfig)（右键 → 另存为）
+2. 双击打开 → 系统设置自动弹出 → 点击"安装"
+3. **完全退出 Chrome**（⌘Q）
+4. 重新打开 Chrome
+5. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
 
 ---
 
-## 开发者发布新版本
+## 自动更新机制
 
-有两种方式发布：
+安装完成后，Chrome 会每隔约 5 小时自动检查更新。当管理员发布新版本时：
 
-### 方式一：本地脚本（原始方式）
+- Chrome **自动下载并安装**新版本
+- 客服小二**无需任何操作**
+- 如需立即更新：打开 `chrome://extensions/` → 开启开发者模式 → 点击左上角"更新"按钮
 
-```bash
-# 指定版本号
-./publish.sh 5.7
+---
 
-# 或自动读取 src/manifest.json 里的 version
-./publish.sh
-```
+## 管理员发布新版本
 
-脚本自动完成：打包 .crx → 更新 updates.xml → git push。
+### 方式一：本地脚本发版
 
-### 方式二：Skill + GitHub Actions（推荐，适合非技术维护者）
-
-安装 skill 后，只需对 Claude Code 说：
-
-```
-帮我发布新版本，代码在 ~/Downloads/plugin-v5.7/
-```
-
-Skill 会自动完成：
-1. 复制新代码到 `src/`
-2. 更新 `manifest.json` 版本号
-3. 提交并推送到 GitHub
-4. GitHub Actions 自动打包 `.crx` 并更新 `updates.xml`
-
-**安装 Skill：**
+前提：本机已安装 Chrome，且有 `key.pem` 文件。
 
 ```bash
-# 克隆仓库
-git clone https://github.com/kim370485-png/customer-service-plugin.git
 cd customer-service-plugin
-
-# 安装 skill 到 Claude Code
-claude skill install ./skills/chrome-extension-publisher
+./publish.sh 6.0
 ```
 
-安装后，对 Claude Code 说"发布新版本"即可触发。详细用法见 [SKILL.md](./skills/chrome-extension-publisher/SKILL.md)。
+脚本自动完成：更新 manifest 版本 → 打包 .crx → 更新 updates.xml → git push。
 
-**前提条件：**
-- 已加入仓库 collaborators（联系 jesse-tzx）
-- 已配置 GitHub 凭证（`gh auth login`）
+### 方式二：GitHub Actions 自动发版（推荐）
 
-客服小二的 Chrome 会在几小时内自动更新，也可手动触发：`chrome://extensions/` → 点击刷新按钮。
+在 GitHub 仓库网页上直接编辑 `src/manifest.json` 的版本号 → Commit → GitHub Actions 自动打包 .crx 并更新 updates.xml。
 
----
+**首次配置**（仅一次）：
+1. 打开仓库 → Settings → Secrets and variables → Actions → New repository secret
+2. Name：`EXTENSION_KEY`
+3. Value：联系管理员获取 `key.pem` 文件内容
+4. 保存
 
-## 文件说明
-
-| 文件 | 用途 |
-|------|------|
-| `src/` | 插件源码（飞猪客服工具箱） |
-| `extension.crx` | 打包后的插件文件（由 publish.sh 生成并提交） |
-| `updates.xml` | Chrome 更新清单，托管在 GitHub raw URL |
-| `install-user.reg` | Windows 注册表文件（推荐，不需要管理员权限） |
-| `install.reg` | Windows 注册表文件（需要管理员权限） |
-| `publish.sh` | 一键发布脚本 |
-
----
-
-## 首次配置（仅开发者，已完成）
-
-### 1. 配置 Extension ID
-
-`updates.xml`、`install-user.reg` 和 `install.reg` 中有 `__EXTENSION_ID__` 占位符，需要替换：
-
-1. Chrome → `chrome://extensions/` → 开发者模式 → 加载已解压的扩展 → 选 `src/`
-2. 记下插件 ID
-3. 替换：
-
-```bash
-sed -i '' 's/__EXTENSION_ID__/你的真实ID/g' updates.xml install-user.reg install.reg
-```
-
-### 2. 生成 key.pem
-
-第一次运行 `publish.sh` 时 Chrome 会自动生成 `key.pem`，后续发布必须用同一个 key 才能保持 Extension ID 不变。`.gitignore` 已排除 `*.pem`，**不要把 key.pem 提交到仓库**。
+之后每次修改 `src/manifest.json` 的版本号并 push，Actions 自动完成发版。
 
 ---
 
@@ -146,51 +72,23 @@ sed -i '' 's/__EXTENSION_ID__/你的真实ID/g' updates.xml install-user.reg ins
 
 | 问题 | 原因 | 解法 |
 |------|------|------|
-| 插件未出现 | 注册表未生效 | 完全退出 Chrome 后重开 |
-| 更新不生效 | Chrome 缓存 | `chrome://extensions/` 手动点刷新 |
-| `updates.xml` 404 | 仓库不是 public | 确认仓库可见性为 Public |
-| 打包失败 | 没装 Chrome | publish.sh 会自动 fallback 到 zip 方式 |
+| Windows 安装后扩展未出现 | Chrome 未完全退出 | 任务管理器结束所有 chrome.exe 进程后重开 |
+| 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `phfpldkfckdkigbhemjhekdpijgbbbop` 加入白名单 |
+| 版本不更新 | Chrome 缓存 | `chrome://extensions/` → 手动点"更新" |
+| Mac mobileconfig 安装失败 | 已有旧描述文件 | 系统设置 → 描述文件 → 删除旧的再装新的 |
 
 ---
 
-## 分发原理
+## 文件说明
 
-### 方式一：本地脚本发布
-
-```
-开发者: ./publish.sh 5.4
-  → 打包 extension.crx
-  → 更新 updates.xml 版本号
-  → git push（extension.crx + updates.xml）
-
-客服小二 Chrome:
-  → 注册表策略 → 指向 updates.xml（GitHub raw URL，固定不变）
-  → Chrome 定期检查 updates.xml
-  → 发现新版本 → 下载 extension.crx → 自动安装
-```
-
-### 方式二：Skill + GitHub Actions 发布（推荐）
-
-```
-维护者: "帮我发布新版本，代码在 ~/Downloads/plugin/"
-  ↓
-Claude Code (Skill):
-  → 复制新代码到 src/
-  → 更新 manifest.json 版本号
-  → git commit + push
-  ↓
-GitHub Actions (自动):
-  → 读取 manifest.json 版本号
-  → 使用 EXTENSION_KEY 打包 extension.crx
-  → 更新 updates.xml 版本号
-  → git commit + push
-  ↓
-客服小二 Chrome:
-  → 检测到 updates.xml 版本变化
-  → 自动下载并安装新版本
-```
-
-**优势：**
-- 维护者不需要本地 Chrome 和 key.pem
-- 所有打包在云端完成，环境一致
-- 兼容 OpenClaw、QoderWork 等 Agent 平台
+| 文件 | 用途 |
+|------|------|
+| `src/` | 插件源码 |
+| `extension.crx` | 打包后的插件（由 publish.sh 或 GitHub Actions 生成） |
+| `updates.xml` | Chrome 自动更新清单 |
+| `install.mobileconfig` | Mac 安装描述文件 |
+| `install-external/install-windows.bat` | Windows 安装脚本 |
+| `install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json` | Windows 扩展配置 |
+| `install-user.reg` | Windows 注册表（备选方案，需要企业环境） |
+| `install.reg` | Windows 注册表（备选方案，需要管理员权限） |
+| `publish.sh` | 本地一键发布脚本 |
