@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-REPO="jesse-tzx/customer-service-plugin"
+REPO="kim370485-png/customer-service-plugin"
 RAW_BASE="https://raw.githubusercontent.com/$REPO/main"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"

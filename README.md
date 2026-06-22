@@ -4,7 +4,7 @@
 
 ## 仓库地址
 
-`https://github.com/jesse-tzx/customer-service-plugin`
+`https://github.com/kim370485-png/customer-service-plugin`
 
 ---
 
@@ -40,7 +40,7 @@
 
 ```bash
 # 下载并运行
-curl -o install-mac.sh https://raw.githubusercontent.com/jesse-tzx/customer-service-plugin/main/install-mac.sh
+curl -o install-mac.sh https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/install-mac.sh
 bash install-mac.sh
 ```
 
@@ -48,7 +48,7 @@ bash install-mac.sh
 
 ```bash
 # 下载并运行
-curl -o install-external-mac.sh https://raw.githubusercontent.com/jesse-tzx/customer-service-plugin/main/install-external/install-mac.sh
+curl -o install-external-mac.sh https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/install-external/install-mac.sh
 bash install-external-mac.sh
 ```
 
@@ -92,7 +92,7 @@ Skill 会自动完成：
 
 ```bash
 # 克隆仓库
-git clone https://github.com/jesse-tzx/customer-service-plugin.git
+git clone https://github.com/kim370485-png/customer-service-plugin.git
 cd customer-service-plugin
 
 # 安装 skill 到 Claude Code

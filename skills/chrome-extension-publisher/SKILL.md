@@ -3,7 +3,7 @@ name: chrome-extension-publisher
 version: 1.0.0
 description: 一键发布 Chrome 浏览器插件到 GitHub，自动打包并分发给所有用户
 author: jesse-tzx
-homepage: https://github.com/jesse-tzx/customer-service-plugin
+homepage: https://github.com/kim370485-png/customer-service-plugin
 ---
 
 # Chrome Extension Publisher
@@ -20,7 +20,7 @@ homepage: https://github.com/jesse-tzx/customer-service-plugin
 
 ```bash
 if [ ! -d "customer-service-plugin" ]; then
-  git clone https://github.com/jesse-tzx/customer-service-plugin.git
+  git clone https://github.com/kim370485-png/customer-service-plugin.git
   cd customer-service-plugin
 fi
 ```
@@ -131,7 +131,7 @@ git show origin/main:updates.xml | grep version
 
 ### GitHub Actions 失败
 - 检查 `EXTENSION_KEY` Secret 是否配置正确
-- 查看 GitHub Actions 日志：https://github.com/jesse-tzx/customer-service-plugin/actions
+- 查看 GitHub Actions 日志：https://github.com/kim370485-png/customer-service-plugin/actions
 
 ### 推送失败
 - 确认维护者已加入仓库 collaborators
@@ -143,7 +143,7 @@ git show origin/main:updates.xml | grep version
 
 ## 技术细节
 
-- **仓库地址**：https://github.com/jesse-tzx/customer-service-plugin
+- **仓库地址**：https://github.com/kim370485-png/customer-service-plugin
 - **GitHub Actions**：`.github/workflows/publish.yml`
 - **自动打包**：使用 Chrome 的 `--pack-extension` 功能
 - **分发机制**：Chrome Enterprise Policy + GitHub Raw URL
