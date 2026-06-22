@@ -1,4 +1,10 @@
 Windows Registry Editor Version 5.00
 
+; 清理旧策略
+[-HKEY_CURRENT_USER\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist]
+[-HKEY_CURRENT_USER\SOFTWARE\Policies\Google\Chrome\ExtensionInstallSources]
+[-HKEY_CURRENT_USER\SOFTWARE\Policies\Google\Chrome\ExtensionInstallAllowlist]
+
+; 重新设置（仅作为备选方案）
 [HKEY_CURRENT_USER\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist]
 "1"="fmoadjiolfncoiahhmmjmgdoniiagohj;https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/updates.xml"
