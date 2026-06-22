@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "飞猪客服工具箱",
-  "version": "5.8",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1msBP/QDnYcvayFv39DSFaIws+RNMhTKeyPvKFf1y60YKOmhz7A89ORkn8YEDj98OFC0Gl9YxXt3UMHFDd1VTDKSsqQH4G/85hywlRF8qs6fdo5BrN4GnQuM0h183k7hXqd+DNGCht/2bVOkEvmXgGJmZDkrA0rbDhPPRjamtNGjPGTXp/CZlFPOYCvp5VrRDswfoP1RaDeMDk04Ir3TG1YYtJO2tFAgCUcjaG55gPkGWJ6BLFnuXZ7korAETFNYzourCHNpR5KkMI+0NWQaM0gIg0CW+KsT+fhqlkRuSilMGJ+menGC+U4vhu02aeqVGRB82hIPI2PRf4GX2RepJwIDAQAB",
+  "version": "5.9",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApStXp7q4PpTP9KIu/GIgBAMBwiONEKdwmMW0c7RRUKp5g75PDLa53SjogcAe+OKnjwFKy/6JtpVqpHR78Uh42GEAx+M/3yW7OuffU5LJm0Yje8gHNjQu8YEchzSPaycqAGFHyBG3wLjTiq9haikp3KRuRqxOBa9jc9lfFj2l9OxOg0VsAVM0D7edwi1n3UOnta7vzbh0tVl4MSx9WPatbxGNEvL/lIV+yid6h4NlqXpf06yLycrgCGHd/U3uKZcOfCv2K1wrPHkcmgfGnJ8aGm1I3Duu1lNUfVJZJF44e7MX07/O1+vBWyB3f9h1e83Sa+I8N23fteEBWTTtBJ1L+wIDAQAB",
   "description": "飞猪国际机票客服提效工具集",
   "action": {
     "default_popup": "popup.html",

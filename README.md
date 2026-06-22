@@ -21,7 +21,7 @@
 
 **方式二：外部扩展（不需要注册表）**
 
-1. 下载 [install-windows.bat](./install-external/install-windows.bat) 和 [njjdclibfaedfofiphakngdnglelphje.json](./install-external/njjdclibfaedfofiphakngdnglelphje.json)
+1. 下载 [install-windows.bat](./install-external/install-windows.bat) 和 [phfpldkfckdkigbhemjhekdpijgbbbop.json](./install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json)
 2. **双击运行** `install-windows.bat`
 3. **重启 Chrome**（完全退出，包括托盘图标）
 4. Chrome 会弹出确认框 → 点击"启用扩展程序"
@@ -92,7 +92,7 @@ Skill 会自动完成：
 
 ```bash
 # 克隆仓库
-git clone https://github.com/jesse-tsx/customer-service-plugin.git
+git clone https://github.com/jesse-tzx/customer-service-plugin.git
 cd customer-service-plugin
 
 # 安装 skill 到 Claude Code

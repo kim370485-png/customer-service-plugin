@@ -20,7 +20,7 @@ homepage: https://github.com/jesse-tzx/customer-service-plugin
 
 ```bash
 if [ ! -d "customer-service-plugin" ]; then
-  git clone https://github.com/jesse-tsx/customer-service-plugin.git
+  git clone https://github.com/jesse-tzx/customer-service-plugin.git
   cd customer-service-plugin
 fi
 ```
@@ -143,7 +143,7 @@ git show origin/main:updates.xml | grep version
 
 ## 技术细节
 
-- **仓库地址**：https://github.com/jesse-tsx/customer-service-plugin
+- **仓库地址**：https://github.com/jesse-tzx/customer-service-plugin
 - **GitHub Actions**：`.github/workflows/publish.yml`
 - **自动打包**：使用 Chrome 的 `--pack-extension` 功能
 - **分发机制**：Chrome Enterprise Policy + GitHub Raw URL
