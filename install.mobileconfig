@@ -14,11 +14,11 @@
             <key>PayloadDisplayName</key>
             <string>飞猪客服工具箱</string>
             <key>PayloadIdentifier</key>
-            <string>com.google.chrome.fliggy-toolbox-v2</string>
+            <string>com.google.chrome.fliggy-toolbox</string>
             <key>PayloadType</key>
             <string>com.google.Chrome</string>
             <key>PayloadUUID</key>
-            <string>E040CF0B-B5A5-D49D-F531-B16A2499B09E</string>
+            <string>A1B2C3D4-E5F6-7890-ABCD-EF1234567890</string>
             <key>PayloadVersion</key>
             <integer>1</integer>
         </dict>
@@ -28,11 +28,11 @@
     <key>PayloadDisplayName</key>
     <string>飞猪客服工具箱 - Chrome 插件</string>
     <key>PayloadIdentifier</key>
-    <string>com.fliggy.chrome-toolbox-v2</string>
+    <string>com.fliggy.chrome-toolbox</string>
     <key>PayloadType</key>
     <string>Configuration</string>
     <key>PayloadUUID</key>
-    <string>3768D495-A764-25E5-BEB5-9788B06E3276</string>
+    <string>F9E8D7C6-B5A4-3210-9876-543210FEDCBA</string>
     <key>PayloadVersion</key>
     <integer>1</integer>
 </dict>

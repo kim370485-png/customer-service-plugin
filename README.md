@@ -23,14 +23,22 @@
 
 ### Mac
 
-1. 下载 [安装飞猪客服工具箱.command](./install-external/安装飞猪客服工具箱.command)（右键 → 另存为，保存到桌面）
-2. 在桌面上找到「安装飞猪客服工具箱.command」文件
-3. **右键点击** → 选择「打开」（第一次运行需要右键打开，直接双击会被系统拦截）
-4. 终端窗口会弹出，显示"✓ 安装成功！"
-5. **完全退出 Chrome**（⌘Q）
-6. 重新打开 Chrome
-7. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
-8. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
+**方式一：描述文件安装（推荐）**
+
+1. 下载 [install.mobileconfig](./install.mobileconfig)（右键 → 另存为，保存到桌面）
+2. 双击打开 → 系统设置会自动打开 → 点击「安装」
+3. **完全退出 Chrome**（⌘Q）
+4. 重新打开 Chrome
+5. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
+
+**方式二：手动安装（备选）**
+
+如果描述文件被 MDM 策略拦截，可以用手动方式：
+
+1. 下载 [install-mac.sh](./install-external/install-mac.sh) 和 [fmoadjiolfncoiahhmmjmgdoniiagohj.json](./install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json) 到同一个文件夹
+2. 打开终端，运行 `bash install-mac.sh`
+3. 完全退出 Chrome（⌘Q）→ 重新打开
+4. Chrome 弹出确认框 → 点击"启用扩展程序"
 
 ---
 
@@ -76,7 +84,8 @@ cd customer-service-plugin
 | 问题 | 原因 | 解法 |
 |------|------|------|
 | Windows 安装后扩展未出现 | Chrome 未完全退出 | 任务管理器结束所有 chrome.exe 进程后重开 |
-| Mac 双击 .command 被拦截 | macOS Gatekeeper 安全限制 | 右键点击文件 → 选择「打开」→ 再点「打开」 |
+| Mac mobileconfig 安装失败 | 旧描述文件冲突 | 系统设置 → 描述文件 → 删除旧的「飞猪客服工具箱」→ 再装新的 |
+| Mac mobileconfig 被 MDM 拦截 | 阿里郎 MDM 阻止 | 改用方式二（终端手动安装） |
 | 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `fmoadjiolfncoiahhmmjmgdoniiagohj` 加入白名单 |
 | 版本不更新 | Chrome 缓存 | `chrome://extensions/` → 手动点"更新" |
 
