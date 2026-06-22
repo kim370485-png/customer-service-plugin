@@ -23,25 +23,14 @@
 
 ### Mac
 
-**方式一：终端命令（推荐，兼容阿里郎 MDM）**
-
-1. 打开「终端」应用（在 应用程序 → 实用工具 里）
-2. 复制粘贴以下命令并回车：
-   ```bash
-   curl -o /tmp/install-mac.sh https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/install-external/install-mac.sh && curl -o /tmp/phfpldkfckdkigbhemjhekdpijgbbbop.json https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json && bash /tmp/install-mac.sh
-   ```
-3. 看到"✓ 安装成功！"后，**完全退出 Chrome**（⌘Q）
-4. 重新打开 Chrome
-5. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
-6. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
-
-**方式二：描述文件（备选，如果终端方式失败再用）**
-
-1. 下载 [install.mobileconfig](./install.mobileconfig)（右键 → 另存为）
-2. 双击打开 → 系统设置自动弹出 → 点击"安装"
-3. **完全退出 Chrome**（⌘Q）
-4. 重新打开 Chrome
-5. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
+1. 下载 [安装飞猪客服工具箱.command](./install-external/安装飞猪客服工具箱.command)（右键 → 另存为，保存到桌面）
+2. 在桌面上找到「安装飞猪客服工具箱.command」文件
+3. **右键点击** → 选择「打开」（第一次运行需要右键打开，直接双击会被系统拦截）
+4. 终端窗口会弹出，显示"✓ 安装成功！"
+5. **完全退出 Chrome**（⌘Q）
+6. 重新打开 Chrome
+7. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
+8. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
 
 ---
 
@@ -87,10 +76,9 @@ cd customer-service-plugin
 | 问题 | 原因 | 解法 |
 |------|------|------|
 | Windows 安装后扩展未出现 | Chrome 未完全退出 | 任务管理器结束所有 chrome.exe 进程后重开 |
-| Mac 终端命令报"权限不够" | 终端没有写 Chrome 目录的权限 | 先手动打开一次 Chrome，再重新跑命令 |
+| Mac 双击 .command 被拦截 | macOS Gatekeeper 安全限制 | 右键点击文件 → 选择「打开」→ 再点「打开」 |
 | 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `phfpldkfckdkigbhemjhekdpijgbbbop` 加入白名单 |
 | 版本不更新 | Chrome 缓存 | `chrome://extensions/` → 手动点"更新" |
-| Mac mobileconfig 安装报错 | 阿里郎 MDM 阻止手动安装 | 改用方式一（终端命令），不经过 MDM |
 
 ---
 
