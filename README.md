@@ -10,16 +10,15 @@
 
 ### Windows
 
-1. 下载以下两个文件到**同一个文件夹**（比如桌面）：
-   - [install-windows.bat](./install-external/install-windows.bat)（右键 → 另存为）
-   - [fmoadjiolfncoiahhmmjmgdoniiagohj.json](./install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json)（右键 → 另存为）
-2. 双击运行 `install-windows.bat`
-3. **完全退出 Chrome**：
+1. 下载 [install-windows-clean.bat](./install-external/install-windows-clean.bat)（右键 → 另存为，保存到桌面）
+2. **右键** `install-windows-clean.bat` → **以管理员身份运行**
+3. 脚本会自动清理旧版本配置并安装新版本
+4. **完全退出 Chrome**：
    - 关闭所有 Chrome 窗口
    - 右下角任务栏托盘区域，找到 Chrome 图标，右键 → 退出
-4. 重新打开 Chrome
-5. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
-6. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
+5. 重新打开 Chrome
+6. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
+7. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
 
 ### Mac
 
