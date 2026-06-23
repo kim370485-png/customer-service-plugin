@@ -10,24 +10,17 @@ set "EXT_ID=phfpldkfckdkigbhemjhekdpijgbbbop"
 set "UPDATE_URL=https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/updates.xml"
 
 :: ============================================================
-:: 写入 HKLM（机器级别策略）
+:: 清理 HKLM（避免与 HKCU 冲突）
+:: 之前版本写入了 HKLM，会导致 Chrome 报"策略冲突"
 :: ============================================================
-echo [1/2] 写入机器策略 (HKLM)...
+echo [1/2] 清理旧策略...
 
-reg add "HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist" /v "1" /t REG_SZ /d "%EXT_ID%;%UPDATE_URL%" /f >nul 2>nul
-
-if %errorlevel% equ 0 (
-    echo   HKLM 写入成功
-) else (
-    echo   HKLM 写入失败（需要管理员权限）
-    echo   请右键此文件 → 以管理员身份运行
-    echo.
-    pause
-    exit /b 1
-)
+reg delete "HKLM\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist" /f >nul 2>nul
+echo   HKLM 已清理
 
 :: ============================================================
-:: 写入 HKCU（用户级别策略，与 HKLM 保持一致避免冲突）
+:: 只写入 HKCU（用户级别策略）
+:: 跟第一个能用的版本（install-user.reg）一样的方式
 :: ============================================================
 echo [2/2] 写入用户策略 (HKCU)...
 
@@ -36,7 +29,9 @@ reg add "HKCU\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist" /v "1" 
 if %errorlevel% equ 0 (
     echo   HKCU 写入成功
 ) else (
-    echo   HKCU 写入失败（可忽略）
+    echo   HKCU 写入失败
+    pause
+    exit /b 1
 )
 
 echo.

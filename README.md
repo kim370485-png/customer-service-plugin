@@ -10,19 +10,17 @@
 
 ### Windows
 
-1. 下载 [install-windows.bat](./install-external/install-windows.bat)（右键 → 另存为，保存到桌面）
-2. **右键** `install-windows.bat` → **以管理员身份运行**（必须！否则无法写入注册表）
-3. 脚本会自动清理冲突策略并安装新版本
-4. **完全退出 Chrome**：
+1. 下载 [install-user.reg](./install-user.reg)（右键 → 另存为，保存到桌面）
+2. **双击运行** `install-user.reg` → 确认导入注册表
+3. **完全退出 Chrome**：
    - 关闭所有 Chrome 窗口
    - 右下角任务栏托盘区域，找到 Chrome 图标，右键 → 退出
    - 任务管理器确认没有 chrome.exe 进程
-5. 重新打开 Chrome
-6. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
-7. 如果没出现，打开 `chrome://policy/` → 点击"重新加载政策" → 刷新页面
+4. 重新打开 Chrome
+5. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
 
-> ⚠ 如果 `chrome://policy/` 显示 ExtensionInstallForcelist 为"冲突"状态，说明 HKCU 策略未清除干净。
-> 请确保以管理员身份运行脚本，且不要导入任何 .reg 文件（.reg 会导致策略冲突）。
+> 不需要管理员权限。如果 `chrome://policy/` 显示 ExtensionInstallForcelist 为"冲突"，
+> 请先运行 [install-windows.bat](./install-external/install-windows.bat) 清理 HKLM 旧策略，再重新导入 install-user.reg。
 
 ### Mac
 
