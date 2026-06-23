@@ -1,6 +1,6 @@
 # 飞猪客服工具箱 - 安装与更新指南
 
-> 当前版本：v5.9 | 扩展 ID：`fmoadjiolfncoiahhmmjmgdoniiagohj`
+> 当前版本：v5.9 | 扩展 ID：`phfpldkfckdkigbhemjhekdpijgbbbop`
 
 ---
 
@@ -38,7 +38,7 @@
 
 如果描述文件被 MDM 策略拦截，可以用手动方式：
 
-1. 下载 [install-mac.sh](./install-external/install-mac.sh) 和 [fmoadjiolfncoiahhmmjmgdoniiagohj.json](./install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json) 到同一个文件夹
+1. 下载 [install-mac.sh](./install-external/install-mac.sh) 和 [phfpldkfckdkigbhemjhekdpijgbbbop.json](./install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json) 到同一个文件夹
 2. 打开终端，运行 `bash install-mac.sh`
 3. 完全退出 Chrome（⌘Q）→ 重新打开
 4. Chrome 弹出确认框 → 点击"启用扩展程序"
@@ -90,7 +90,7 @@ cd customer-service-plugin
 | chrome://policy 显示"冲突" | HKCU 与 HKLM 策略冲突 | 删除 HKCU 策略：`reg delete "HKCU\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist" /f`，然后以管理员身份重新运行 install-windows.bat |
 | Mac mobileconfig 安装失败 | 旧描述文件冲突 | 系统设置 → 描述文件 → 删除旧的「飞猪客服工具箱」→ 再装新的 |
 | Mac mobileconfig 被 MDM 拦截 | 阿里郎 MDM 阻止 | 改用方式二（终端手动安装） |
-| 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `fmoadjiolfncoiahhmmjmgdoniiagohj` 加入白名单 |
+| 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `phfpldkfckdkigbhemjhekdpijgbbbop` 加入白名单 |
 | 版本不更新 | Chrome 缓存 | `chrome://extensions/` → 手动点"更新" |
 
 ---
@@ -104,6 +104,6 @@ cd customer-service-plugin
 | `updates.xml` | Chrome 自动更新清单 |
 | `install.mobileconfig` | Mac 安装描述文件 |
 | `install-external/install-windows.bat` | Windows 安装脚本（管理员运行，自动合并策略） |
-| `install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json` | Windows 扩展配置（External Extensions 方式） |
+| `install-external/phfpldkfckdkigbhemjhekdpijgbbbop.json` | Windows 扩展配置（External Extensions 方式） |
 | `install.reg` | Windows 注册表（备用，会覆盖企业策略，慎用） |
 | `publish.sh` | 本地一键发布脚本 |

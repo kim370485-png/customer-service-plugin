@@ -44,38 +44,123 @@ fi
 
 # ── 打包 .crx ─────────────────────────────────────────────
 
-CHROME_PATH=""
-for p in \
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-  "/Applications/Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary" \
-  "/usr/bin/google-chrome" \
-  "/usr/bin/google-chrome-stable"; do
-  [ -x "$p" ] && CHROME_PATH="$p" && break
-done
+# 使用 Python 打包 CRX3（Chrome --pack-extension 在部分系统上不使用指定 key）
+if [ ! -f "key.pem" ]; then
+  error "key.pem 不存在！需要私钥文件来签名扩展"
+fi
 
-mkdir -p build
+info "使用 Python 打包 CRX3..."
+python3 << 'PYEOF'
+import struct, hashlib, zipfile, io, os, subprocess, sys
 
-if [ -n "$CHROME_PATH" ]; then
-  info "使用 Chrome 打包: $CHROME_PATH"
-  if [ -f "key.pem" ]; then
-    # 复用已有 key.pem，保证 Extension ID 不变
-    "$CHROME_PATH" --pack-extension=src --pack-extension-key=key.pem 2>/dev/null || true
-  else
-    # 首次打包，Chrome 自动生成 key.pem
-    "$CHROME_PATH" --pack-extension=src 2>/dev/null || true
-    if [ -f "src.pem" ]; then
-      cp src.pem key.pem
-      info "已生成 key.pem（本地保留，不要提交到仓库）"
-    fi
-  fi
-  if [ -f "src.crx" ]; then
-    mv src.crx build/extension.crx
-    ok "打包完成: build/extension.crx"
-  else
-    error "Chrome 打包失败，请检查 Chrome 是否安装正确"
-  fi
+def encode_varint(value):
+    result = b''
+    while value > 0x7f:
+        result += bytes([(value & 0x7f) | 0x80])
+        value >>= 7
+    result += bytes([value & 0x7f])
+    return result
+
+def encode_field(field_num, wire_type, data):
+    tag = (field_num << 3) | wire_type
+    if wire_type == 2:
+        return encode_varint(tag) + encode_varint(len(data)) + data
+    elif wire_type == 0:
+        return encode_varint(tag) + encode_varint(data)
+    else:
+        raise ValueError(f"Unsupported wire type: {wire_type}")
+
+# Create ZIP
+zip_buffer = io.BytesIO()
+with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zf:
+    for root, dirs, files in os.walk('src'):
+        for file in files:
+            filepath = os.path.join(root, file)
+            arcname = os.path.relpath(filepath, 'src')
+            zf.write(filepath, arcname)
+zip_data = zip_buffer.getvalue()
+
+# Load keys
+with open('key.pem', 'rb') as f:
+    key_pem = f.read()
+
+result = subprocess.run(['openssl', 'rsa', '-in', 'key.pem', '-pubout', '-outform', 'DER'], capture_output=True)
+if result.returncode != 0:
+    print("Error: Failed to extract public key from key.pem", file=sys.stderr)
+    sys.exit(1)
+pub_key_der = result.stdout
+
+try:
+    from cryptography.hazmat.primitives import hashes, serialization
+    from cryptography.hazmat.primitives.asymmetric import padding
+    from cryptography.hazmat.backends import default_backend
+except ImportError:
+    print("Error: cryptography library not installed. Run: pip3 install cryptography", file=sys.stderr)
+    sys.exit(1)
+
+private_key = serialization.load_pem_private_key(key_pem, password=None, backend=default_backend())
+
+# Create placeholder SignedData for signing
+placeholder_sig = b'\x00' * 256
+signed_data_fields = encode_field(1, 2, placeholder_sig) + encode_field(2, 2, pub_key_der)
+crx_header = encode_field(2, 2, signed_data_fields)
+
+# Sign: "CRX3 SignedData\x00" + header + zip
+signed_content = b'CRX3 SignedData\x00' + crx_header + zip_data
+signature = private_key.sign(signed_content, padding.PKCS1v15(), hashes.SHA256())
+
+# Create final SignedData with real signature
+signed_data_fields = encode_field(1, 2, signature) + encode_field(2, 2, pub_key_der)
+crx_header = encode_field(2, 2, signed_data_fields)
+
+# Build CRX3 file
+crx = b'Cr24' + struct.pack('<I', 3) + struct.pack('<I', len(crx_header)) + crx_header + zip_data
+
+os.makedirs('build', exist_ok=True)
+with open('build/extension.crx', 'wb') as f:
+    f.write(crx)
+
+# Verify ID
+header_size = struct.unpack('<I', crx[8:12])[0]
+header = crx[12:12+header_size]
+
+def parse_pb(data):
+    pos = 0; fields = []
+    while pos < len(data):
+        byte = data[pos]; fn = byte >> 3; wt = byte & 0x07; pos += 1
+        if wt == 2:
+            l, s = 0, 0
+            while pos < len(data):
+                b = data[pos]; l |= (b & 0x7f) << s; pos += 1
+                if not (b & 0x80): break
+                s += 7
+            val = data[pos:pos+l]; pos += l
+            fields.append((fn, val))
+        elif wt == 0:
+            val, s = 0, 0
+            while pos < len(data):
+                b = data[pos]; val |= (b & 0x7f) << s; pos += 1
+                if not (b & 0x80): break
+                s += 7
+            fields.append((fn, val))
+        else: break
+    return fields
+
+for fn, fv in parse_pb(header):
+    if fn == 2 and isinstance(fv, bytes):
+        for sfn, sfv in parse_pb(fv):
+            if sfn == 2 and isinstance(sfv, bytes):
+                h = hashlib.sha256(sfv).hexdigest()[:32]
+                ext_id = ''.join(chr(ord('a') + int(c, 16)) for c in h)
+                print(f"  CRX Extension ID: {ext_id}")
+
+print(f"  CRX size: {len(crx)} bytes")
+PYEOF
+
+if [ -f "build/extension.crx" ]; then
+  ok "打包完成: build/extension.crx"
 else
-  error "未找到 Chrome，无法打包 .crx"
+  error "Python 打包失败"
 fi
 
 # ── 更新 updates.xml ──────────────────────────────────────
