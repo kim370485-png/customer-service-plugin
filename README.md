@@ -10,15 +10,19 @@
 
 ### Windows
 
-1. 下载 [install-windows-clean.bat](./install-external/install-windows-clean.bat)（右键 → 另存为，保存到桌面）
-2. **右键** `install-windows-clean.bat` → **以管理员身份运行**
-3. 脚本会自动清理旧版本配置并安装新版本
+1. 下载 [install-windows.bat](./install-external/install-windows.bat)（右键 → 另存为，保存到桌面）
+2. **右键** `install-windows.bat` → **以管理员身份运行**（必须！否则无法写入注册表）
+3. 脚本会自动清理冲突策略并安装新版本
 4. **完全退出 Chrome**：
    - 关闭所有 Chrome 窗口
    - 右下角任务栏托盘区域，找到 Chrome 图标，右键 → 退出
+   - 任务管理器确认没有 chrome.exe 进程
 5. 重新打开 Chrome
-6. Chrome 会弹出提示"已添加新的扩展程序" → 点击**启用扩展程序**
-7. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
+6. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
+7. 如果没出现，打开 `chrome://policy/` → 点击"重新加载政策" → 刷新页面
+
+> ⚠ 如果 `chrome://policy/` 显示 ExtensionInstallForcelist 为"冲突"状态，说明 HKCU 策略未清除干净。
+> 请确保以管理员身份运行脚本，且不要导入任何 .reg 文件（.reg 会导致策略冲突）。
 
 ### Mac
 
@@ -83,6 +87,7 @@ cd customer-service-plugin
 | 问题 | 原因 | 解法 |
 |------|------|------|
 | Windows 安装后扩展未出现 | Chrome 未完全退出 | 任务管理器结束所有 chrome.exe 进程后重开 |
+| chrome://policy 显示"冲突" | HKCU 与 HKLM 策略冲突 | 删除 HKCU 策略：`reg delete "HKCU\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist" /f`，然后以管理员身份重新运行 install-windows.bat |
 | Mac mobileconfig 安装失败 | 旧描述文件冲突 | 系统设置 → 描述文件 → 删除旧的「飞猪客服工具箱」→ 再装新的 |
 | Mac mobileconfig 被 MDM 拦截 | 阿里郎 MDM 阻止 | 改用方式二（终端手动安装） |
 | 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `fmoadjiolfncoiahhmmjmgdoniiagohj` 加入白名单 |
@@ -98,8 +103,7 @@ cd customer-service-plugin
 | `extension.crx` | 打包后的插件（由 publish.sh 或 GitHub Actions 生成） |
 | `updates.xml` | Chrome 自动更新清单 |
 | `install.mobileconfig` | Mac 安装描述文件 |
-| `install-external/install-windows.bat` | Windows 安装脚本 |
-| `install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json` | Windows 扩展配置 |
-| `install-user.reg` | Windows 注册表（备选方案，需要企业环境） |
-| `install.reg` | Windows 注册表（备选方案，需要管理员权限） |
+| `install-external/install-windows.bat` | Windows 安装脚本（管理员运行，自动合并策略） |
+| `install-external/fmoadjiolfncoiahhmmjmgdoniiagohj.json` | Windows 扩展配置（External Extensions 方式） |
+| `install.reg` | Windows 注册表（备用，会覆盖企业策略，慎用） |
 | `publish.sh` | 本地一键发布脚本 |
