@@ -8,7 +8,21 @@
 
 安装后，后续所有版本更新由 Chrome 自动完成，无需再操作。
 
-### Windows
+### 方式一：手动加载（推荐，最简单）
+
+适用于 Windows 和 Mac，不需要管理员权限。
+
+1. **下载扩展包**：下载 [飞猪客服工具箱-安装包.zip](./飞猪客服工具箱-安装包.zip)，解压到桌面（或任意位置）
+2. **打开 Chrome 扩展页面**：地址栏输入 `chrome://extensions/`
+3. **开启开发者模式**：右上角打开"开发者模式"开关（蓝色开关）
+4. **加载扩展**：点击左上角"加载已解压的扩展程序" → 选择解压出来的文件夹 → 确定
+5. **完成**：刷新工作页面，扩展已生效 ✅
+
+> 解压的文件夹不能删除或移动，否则扩展会失效。建议放在固定位置（如 `D:\Tools\FliggyToolbox`）。
+
+### 方式二：Windows 注册表安装（备选）
+
+如果手动加载后 Chrome 提示"您的浏览器由所属组织管理"且扩展被禁用，可以尝试注册表方式：
 
 1. 下载 [install-user.reg](./install-user.reg)（右键 → 另存为，保存到桌面）
 2. **双击运行** `install-user.reg` → 确认导入注册表
@@ -22,9 +36,9 @@
 > 不需要管理员权限。如果 `chrome://policy/` 显示 ExtensionInstallForcelist 为"冲突"，
 > 请先运行 [install-windows.bat](./install-external/install-windows.bat) 清理 HKLM 旧策略，再重新导入 install-user.reg。
 
-### Mac
+### 方式三：Mac 描述文件安装（备选）
 
-**方式一：描述文件安装（推荐）**
+**方式 A：描述文件安装**
 
 1. 下载 [install.mobileconfig](./install.mobileconfig)（右键 → 另存为，保存到桌面）
 2. 双击打开 → 系统设置会自动打开 → 点击「安装」
@@ -32,7 +46,7 @@
 4. 重新打开 Chrome
 5. 打开 `chrome://extensions/` 确认看到"飞猪客服工具箱" ✅
 
-**方式二：手动安装（备选）**
+**方式 B：手动安装（备选）**
 
 如果描述文件被 MDM 策略拦截，可以用手动方式：
 
@@ -50,6 +64,8 @@
 - Chrome **自动下载并安装**新版本
 - 客服小二**无需任何操作**
 - 如需立即更新：打开 `chrome://extensions/` → 开启开发者模式 → 点击左上角"更新"按钮
+
+> 无论是手动加载还是注册表安装，自动更新都正常工作。Chrome 的更新机制只看 `update_url` 配置，与安装方式无关。
 
 ---
 
@@ -84,10 +100,13 @@ cd customer-service-plugin
 
 | 问题 | 原因 | 解法 |
 |------|------|------|
+| 手动加载提示"清单文件缺失或不可读取" | 选的文件夹不对 | 确保选择的文件夹里直接有 `manifest.json`，而不是它的子文件夹 |
+| 手动加载后扩展消失 | 解压的文件夹被移动或删除 | 重新解压到固定位置，重新加载扩展 |
+| Chrome 弹出"禁用开发者模式扩展程序" | Chrome 安全提示 | 点"取消"即可继续使用，这是正常现象 |
 | Windows 安装后扩展未出现 | Chrome 未完全退出 | 任务管理器结束所有 chrome.exe 进程后重开 |
 | chrome://policy 显示"冲突" | HKCU 与 HKLM 策略冲突 | 删除 HKCU 策略：`reg delete "HKCU\SOFTWARE\Policies\Google\Chrome\ExtensionInstallForcelist" /f`，然后以管理员身份重新运行 install-windows.bat |
 | Mac mobileconfig 安装失败 | 旧描述文件冲突 | 系统设置 → 描述文件 → 删除旧的「飞猪客服工具箱」→ 再装新的 |
-| Mac mobileconfig 被 MDM 拦截 | 阿里郎 MDM 阻止 | 改用方式二（终端手动安装） |
+| Mac mobileconfig 被 MDM 拦截 | 阿里郎 MDM 阻止 | 改用方式一（手动加载）或方式三 B（终端手动安装） |
 | 扩展出现但被禁用 | 企业管理策略拦截 | 联系 IT 将 `phfpldkfckdkigbhemjhekdpijgbbbop` 加入白名单 |
 | 版本不更新 | Chrome 缓存 | `chrome://extensions/` → 手动点"更新" |
 
