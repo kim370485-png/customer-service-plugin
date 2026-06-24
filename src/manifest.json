@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "飞猪客服工具箱",
-  "version": "6.2",
+  "version": "6.3",
   "description": "飞猪国际机票客服提效工具集",
   "action": {
     "default_popup": "popup.html",
