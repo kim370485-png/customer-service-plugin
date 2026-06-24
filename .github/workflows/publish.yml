@@ -161,14 +161,36 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           TAG="v${VERSION}"
 
-          # Create release (skip if already exists)
-          gh release create "$TAG" extension.zip \
-            --title "v${VERSION}" \
-            --notes "飞猪客服工具箱 v${VERSION}" \
-            --draft=false \
-            2>/dev/null || echo "Release $TAG already exists, updating asset..."
+          # Release notes with installation guide
+          NOTES=$(cat <<'ENDNOTES'
+## 下载
 
-          # If release already existed, upload/overwrite the zip
+- **extension.zip** — 扩展安装包
+- **安装教程.html** — 安装教程（用浏览器打开）
+
+## 快速安装
+
+1. 下载 extension.zip，解压到固定位置（如 `D:\Tools\FliggyToolbox`）
+2. 打开 `chrome://extensions/`
+3. 右上角开启「开发者模式」
+4. 点击「加载已解压的扩展程序」→ 选择解压文件夹 → 确定
+5. 刷新工作页面
+
+## 更新
+
+收到更新通知后，点击通知 → 下载新版 extension.zip → 解压覆盖 → `chrome://extensions/` 刷新
+ENDNOTES
+          )
+
+          # Create release (skip if already exists)
+          gh release create "$TAG" extension.zip 安装教程.html \
+            --title "v${VERSION}" \
+            --notes "$NOTES" \
+            --draft=false \
+            2>/dev/null || echo "Release $TAG already exists, updating assets..."
+
+          # If release already existed, upload/overwrite the assets
           gh release upload "$TAG" extension.zip --clobber 2>/dev/null || true
+          gh release upload "$TAG" 安装教程.html --clobber 2>/dev/null || true
 
           echo "✓ Release $TAG ready"

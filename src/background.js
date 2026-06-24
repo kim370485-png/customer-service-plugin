@@ -370,7 +370,7 @@ function checkSelfUpdate(force) {
             type: 'basic',
             iconUrl: chrome.runtime.getURL('icon.png'),
             title: '飞猪客服工具箱有新版本',
-            message: '发现新版本 ' + remoteVersion + '（当前 ' + currentVersion + '），点击打开下载页面',
+            message: '发现新版本 ' + remoteVersion + '（当前 ' + currentVersion + '），点击下载安装包并更新',
             priority: 2
           }, function(notificationId) {
             if (chrome.runtime.lastError) {
