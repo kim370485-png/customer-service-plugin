@@ -384,7 +384,7 @@ function checkSelfUpdate(force) {
           chrome.storage.local.set({
             selfUpdateAvailable: true,
             selfRemoteVersion: remoteVersion,
-            selfDownloadUrl: SELF_DOWNLOAD_URL
+            selfDownloadUrl: SELF_DOWNLOAD_URLS[1]
           });
 
           // 弹出通知
