@@ -339,6 +339,7 @@ var SELF_DOWNLOAD_URL = 'https://raw.githubusercontent.com/kim370485-png/custome
 
 function checkSelfUpdate(force) {
   var currentVersion = chrome.runtime.getManifest().version;
+  console.log('[Toolbox] 检查自身更新, 当前版本:', currentVersion, '强制:', force);
 
   chrome.storage.local.get(['selfUpdateLastCheck', 'selfUpdateSkipVersion'], function(result) {
     var now = Date.now();
@@ -357,6 +358,7 @@ function checkSelfUpdate(force) {
       .then(function(data) {
         var remoteVersion = data.version || '';
         var skipVersion = result.selfUpdateSkipVersion || '';
+        console.log('[Toolbox] 远程版本:', remoteVersion, '跳过版本:', skipVersion);
 
         if (remoteVersion && compareVersion(remoteVersion, currentVersion) > 0 && remoteVersion !== skipVersion) {
           console.log('[Toolbox] 发现新版本: ' + remoteVersion + ' (当前: ' + currentVersion + ')');
@@ -371,12 +373,19 @@ function checkSelfUpdate(force) {
           // 弹出通知
           chrome.notifications.create('toolbox-self-update', {
             type: 'basic',
-            iconUrl: 'icon.png',
+            iconUrl: chrome.runtime.getURL('icon.png'),
             title: '飞猪客服工具箱有新版本',
             message: '发现新版本 ' + remoteVersion + '（当前 ' + currentVersion + '），点击打开下载页面',
             priority: 2
+          }, function(notificationId) {
+            if (chrome.runtime.lastError) {
+              console.log('[Toolbox] 通知创建失败:', chrome.runtime.lastError.message);
+            } else {
+              console.log('[Toolbox] 通知创建成功:', notificationId);
+            }
           });
         } else {
+          console.log('[Toolbox] 无需更新');
           chrome.storage.local.set({ selfUpdateAvailable: false });
         }
       })
