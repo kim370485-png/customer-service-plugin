@@ -150,24 +150,31 @@ chrome.runtime.onInstalled.addListener(function(details) {
   }
   onExtensionReady();
   setTimeout(function() { checkAllUpdates(true); }, 5000);
+  setTimeout(function() { checkSelfUpdate(true); }, 8000);
 });
 
 chrome.runtime.onStartup.addListener(function() {
   onExtensionReady();
   setTimeout(function() { checkAllUpdates(false); }, 10000);
+  setTimeout(function() { checkSelfUpdate(false); }, 15000);
 });
 
 chrome.alarms && chrome.alarms.onAlarm && chrome.alarms.onAlarm.addListener(function(alarm) {
   if (alarm.name === 'toolbox-update-check') {
     checkAllUpdates(false);
   }
+  if (alarm.name === 'self-update-check') {
+    checkSelfUpdate(false);
+  }
 });
 
 function setupUpdateAlarm() {
   if (chrome.alarms) {
     chrome.alarms.create('toolbox-update-check', { periodInMinutes: 120 });
+    chrome.alarms.create('self-update-check', { periodInMinutes: 240 });
   } else {
     setInterval(function() { checkAllUpdates(false); }, 7200000);
+    setInterval(function() { checkSelfUpdate(false); }, 14400000);
   }
 }
 setupUpdateAlarm();
@@ -377,25 +384,6 @@ chrome.notifications.onClicked.addListener(function(notificationId) {
     chrome.notifications.clear('toolbox-self-update');
   }
 });
-
-// 启动时检查自身更新
-chrome.runtime.onInstalled.addListener(function() {
-  setTimeout(function() { checkSelfUpdate(true); }, 8000);
-});
-
-chrome.runtime.onStartup.addListener(function() {
-  setTimeout(function() { checkSelfUpdate(false); }, 15000);
-});
-
-// 定时检查（每 4 小时）
-if (chrome.alarms) {
-  chrome.alarms.create('self-update-check', { periodInMinutes: 240 });
-  chrome.alarms.onAlarm.addListener(function(alarm) {
-    if (alarm.name === 'self-update-check') {
-      checkSelfUpdate(false);
-    }
-  });
-}
 
 // ===== 主动注入 tid 自动填充到 recall 页面（含 iframe）=====
 chrome.webNavigation.onCompleted.addListener(
