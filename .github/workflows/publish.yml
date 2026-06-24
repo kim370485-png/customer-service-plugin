@@ -90,10 +90,37 @@ jobs:
               f.write(crx)
           print(f"CRX created: {len(crx)} bytes")
 
-          # Also save the ZIP for easy download
+          # Also save the ZIP for easy download (remove update_url for unpacked compatibility)
+          import json
+          with open('src/manifest.json', 'r') as f:
+              manifest = json.load(f)
+          if 'update_url' in manifest:
+              del manifest['update_url']
+          # Create a temporary manifest without update_url
+          import tempfile, shutil
+          temp_src = tempfile.mkdtemp()
+          for root, dirs, files in os.walk('src'):
+              for file in files:
+                  src_file = os.path.join(root, file)
+                  rel_path = os.path.relpath(src_file, 'src')
+                  dst_file = os.path.join(temp_src, rel_path)
+                  os.makedirs(os.path.dirname(dst_file), exist_ok=True)
+                  if file == 'manifest.json':
+                      with open(dst_file, 'w') as f:
+                          json.dump(manifest, f, indent=2, ensure_ascii=False)
+                  else:
+                      shutil.copy2(src_file, dst_file)
+          zip_buffer2 = io.BytesIO()
+          with zipfile.ZipFile(zip_buffer2, 'w', zipfile.ZIP_DEFLATED) as zf:
+              for root, dirs, files in os.walk(temp_src):
+                  for file in files:
+                      filepath = os.path.join(root, file)
+                      arcname = os.path.relpath(filepath, temp_src)
+                      zf.write(filepath, arcname)
           with open('extension.zip', 'wb') as f:
-              f.write(zip_data)
-          print(f"ZIP created: {len(zip_data)} bytes")
+              f.write(zip_buffer2.getvalue())
+          shutil.rmtree(temp_src)
+          print(f"ZIP created: {len(zip_buffer2.getvalue())} bytes (without update_url)")
           PYEOF
 
           # Clean up key
