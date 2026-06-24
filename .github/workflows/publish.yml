@@ -89,6 +89,11 @@ jobs:
           with open('extension.crx', 'wb') as f:
               f.write(crx)
           print(f"CRX created: {len(crx)} bytes")
+
+          # Also save the ZIP for easy download
+          with open('extension.zip', 'wb') as f:
+              f.write(zip_data)
+          print(f"ZIP created: {len(zip_data)} bytes")
           PYEOF
 
           # Clean up key
@@ -111,7 +116,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add extension.crx updates.xml
+          git add extension.crx extension.zip updates.xml
 
           # Only commit if there are changes
           if git diff --staged --quiet; then

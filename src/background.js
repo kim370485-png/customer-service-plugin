@@ -403,7 +403,8 @@ function checkSelfUpdate(force) {
 // 通知点击事件：打开下载页面
 chrome.notifications.onClicked.addListener(function(notificationId) {
   if (notificationId === 'toolbox-self-update') {
-    chrome.tabs.create({ url: 'https://github.com/kim370485-png/customer-service-plugin', active: true });
+    // 直接下载最新 ZIP 文件
+    chrome.tabs.create({ url: 'https://github.com/kim370485-png/customer-service-plugin/raw/main/extension.zip', active: true });
     chrome.notifications.clear('toolbox-self-update');
   }
 });
