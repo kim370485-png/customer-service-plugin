@@ -150,13 +150,13 @@ chrome.runtime.onInstalled.addListener(function(details) {
   }
   onExtensionReady();
   setTimeout(function() { checkAllUpdates(true); }, 5000);
-  setTimeout(function() { checkSelfUpdate(true); }, 8000);
+  setTimeout(function() { checkSelfUpdate(true); }, 3000);
 });
 
 chrome.runtime.onStartup.addListener(function() {
   onExtensionReady();
   setTimeout(function() { checkAllUpdates(false); }, 10000);
-  setTimeout(function() { checkSelfUpdate(false); }, 15000);
+  setTimeout(function() { checkSelfUpdate(false); }, 5000);
 });
 
 chrome.alarms && chrome.alarms.onAlarm && chrome.alarms.onAlarm.addListener(function(alarm) {
@@ -178,6 +178,10 @@ function setupUpdateAlarm() {
   }
 }
 setupUpdateAlarm();
+
+// 顶层立即执行一次自身更新检查（不依赖 onInstalled 事件）
+// 这样在扩展重新加载时也能触发检查
+checkSelfUpdate(true);
 
 // ===== 扩展启动/重新加载 =====
 function onExtensionReady() {
@@ -320,6 +324,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg.action === 'skip_update_version') {
     chrome.storage.local.set({ [msg.toolId + 'SkipVersion']: msg.version || '' });
+    sendResponse({ ok: true });
+  }
+
+  if (msg.action === 'check_self_update') {
+    checkSelfUpdate(true);
     sendResponse({ ok: true });
   }
 });
