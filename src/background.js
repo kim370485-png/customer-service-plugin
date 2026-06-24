@@ -381,7 +381,12 @@ function checkSelfUpdate(force) {
         }
       })
       .catch(function(err) {
-        console.log('[Toolbox] 自身更新检查失败:', err.message);
+        var errorMsg = '[Toolbox] 自身更新检查失败: ' + err.message;
+        console.log(errorMsg);
+        // 如果是网络错误，尝试记录详细信息
+        if (err.message.indexOf('Failed to fetch') >= 0 || err.message.indexOf('NetworkError') >= 0) {
+          console.log('[Toolbox] 可能是网络问题，无法访问 GitHub。请检查网络连接或防火墙设置。');
+        }
       });
   });
 }
