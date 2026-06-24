@@ -335,7 +335,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 // ===== 扩展自身版本更新检查 =====
 var SELF_UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json';
-var SELF_REPO_URL = 'https://github.com/kim370485-png/customer-service-plugin';
+var SELF_REPO_URL = 'https://github.com/kim370485-png/customer-service-plugin/releases/latest';
 
 function checkSelfUpdate(force) {
   var currentVersion = chrome.runtime.getManifest().version;

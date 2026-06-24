@@ -153,3 +153,22 @@ jobs:
             git push
             echo "✓ Committed and pushed"
           fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG="v${VERSION}"
+
+          # Create release (skip if already exists)
+          gh release create "$TAG" extension.zip \
+            --title "v${VERSION}" \
+            --notes "飞猪客服工具箱 v${VERSION}" \
+            --draft=false \
+            2>/dev/null || echo "Release $TAG already exists, updating asset..."
+
+          # If release already existed, upload/overwrite the zip
+          gh release upload "$TAG" extension.zip --clobber 2>/dev/null || true
+
+          echo "✓ Release $TAG ready"
