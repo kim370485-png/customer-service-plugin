@@ -336,15 +336,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 // ===== 扩展自身版本更新检查 =====
 var SELF_UPDATE_CHECK_URLS = [
   'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json',
-  'https://ghfast.top/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json'
+  'https://gh-proxy.com/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json'
 ];
 var SELF_DOWNLOAD_URLS = [
   'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx',
-  'https://ghfast.top/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx'
+  'https://gh-proxy.com/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx'
 ];
 var SELF_ZIP_URLS = [
   'https://github.com/kim370485-png/customer-service-plugin/raw/main/extension.zip',
-  'https://ghfast.top/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.zip'
+  'https://gh-proxy.com/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.zip'
 ];
 
 function tryFetch(urls, index) {
