@@ -317,6 +317,86 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
+// ===== 扩展自身版本更新检查 =====
+var SELF_UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json';
+var SELF_DOWNLOAD_URL = 'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx';
+
+function checkSelfUpdate(force) {
+  var currentVersion = chrome.runtime.getManifest().version;
+
+  chrome.storage.local.get(['selfUpdateLastCheck', 'selfUpdateSkipVersion'], function(result) {
+    var now = Date.now();
+    // 每 4 小时检查一次，除非强制检查
+    if (!force && result.selfUpdateLastCheck && (now - result.selfUpdateLastCheck < 4 * 3600000)) {
+      return;
+    }
+
+    chrome.storage.local.set({ selfUpdateLastCheck: now });
+
+    fetch(SELF_UPDATE_CHECK_URL, { cache: 'no-cache' })
+      .then(function(res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function(data) {
+        var remoteVersion = data.version || '';
+        var skipVersion = result.selfUpdateSkipVersion || '';
+
+        if (remoteVersion && compareVersion(remoteVersion, currentVersion) > 0 && remoteVersion !== skipVersion) {
+          console.log('[Toolbox] 发现新版本: ' + remoteVersion + ' (当前: ' + currentVersion + ')');
+
+          // 保存更新信息
+          chrome.storage.local.set({
+            selfUpdateAvailable: true,
+            selfRemoteVersion: remoteVersion,
+            selfDownloadUrl: SELF_DOWNLOAD_URL
+          });
+
+          // 弹出通知
+          chrome.notifications.create('toolbox-self-update', {
+            type: 'basic',
+            iconUrl: 'icon.png',
+            title: '飞猪客服工具箱有新版本',
+            message: '发现新版本 ' + remoteVersion + '（当前 ' + currentVersion + '），点击打开下载页面',
+            priority: 2
+          });
+        } else {
+          chrome.storage.local.set({ selfUpdateAvailable: false });
+        }
+      })
+      .catch(function(err) {
+        console.log('[Toolbox] 自身更新检查失败:', err.message);
+      });
+  });
+}
+
+// 通知点击事件：打开下载页面
+chrome.notifications.onClicked.addListener(function(notificationId) {
+  if (notificationId === 'toolbox-self-update') {
+    chrome.tabs.create({ url: 'https://github.com/kim370485-png/customer-service-plugin', active: true });
+    chrome.notifications.clear('toolbox-self-update');
+  }
+});
+
+// 启动时检查自身更新
+chrome.runtime.onInstalled.addListener(function() {
+  setTimeout(function() { checkSelfUpdate(true); }, 8000);
+});
+
+chrome.runtime.onStartup.addListener(function() {
+  setTimeout(function() { checkSelfUpdate(false); }, 15000);
+});
+
+// 定时检查（每 4 小时）
+if (chrome.alarms) {
+  chrome.alarms.create('self-update-check', { periodInMinutes: 240 });
+  chrome.alarms.onAlarm.addListener(function(alarm) {
+    if (alarm.name === 'self-update-check') {
+      checkSelfUpdate(false);
+    }
+  });
+}
+
 // ===== 主动注入 tid 自动填充到 recall 页面（含 iframe）=====
 chrome.webNavigation.onCompleted.addListener(
   function (details) {

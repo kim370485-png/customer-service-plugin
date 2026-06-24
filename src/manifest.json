@@ -19,13 +19,15 @@
     "storage",
     "tabs",
     "declarativeNetRequest",
-    "webNavigation"
+    "webNavigation",
+    "notifications"
   ],
   "host_permissions": [
     "*://fliggy.service.fliggy.com/*",
     "*://kefu.fliggy.com/*",
     "*://yida.alibaba-inc.com/*",
-    "*://recall.alibaba-inc.com/*"
+    "*://recall.alibaba-inc.com/*",
+    "*://raw.githubusercontent.com/*"
   ],
   "declarative_net_request": {
     "rule_resources": [
