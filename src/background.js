@@ -334,8 +334,25 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 
 // ===== 扩展自身版本更新检查 =====
-var SELF_UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json';
-var SELF_DOWNLOAD_URL = 'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx';
+var SELF_UPDATE_CHECK_URLS = [
+  'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json',
+  'https://ghfast.top/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json'
+];
+var SELF_DOWNLOAD_URLS = [
+  'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx',
+  'https://ghfast.top/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx'
+];
+var SELF_ZIP_URLS = [
+  'https://github.com/kim370485-png/customer-service-plugin/raw/main/extension.zip',
+  'https://ghfast.top/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.zip'
+];
+
+function tryFetch(urls, index) {
+  if (index >= urls.length) return Promise.reject(new Error('All URLs failed'));
+  return fetch(urls[index], { cache: 'no-cache' }).catch(function() {
+    return tryFetch(urls, index + 1);
+  });
+}
 
 function checkSelfUpdate(force) {
   var currentVersion = chrome.runtime.getManifest().version;
@@ -350,7 +367,7 @@ function checkSelfUpdate(force) {
 
     chrome.storage.local.set({ selfUpdateLastCheck: now });
 
-    fetch(SELF_UPDATE_CHECK_URL, { cache: 'no-cache' })
+    tryFetch(SELF_UPDATE_CHECK_URLS, 0)
       .then(function(res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -400,11 +417,12 @@ function checkSelfUpdate(force) {
   });
 }
 
-// 通知点击事件：打开下载页面
+// 通知点击事件：打开下载页面（使用镜像加速）
 chrome.notifications.onClicked.addListener(function(notificationId) {
   if (notificationId === 'toolbox-self-update') {
-    // 直接下载最新 ZIP 文件
-    chrome.tabs.create({ url: 'https://github.com/kim370485-png/customer-service-plugin/raw/main/extension.zip', active: true });
+    // 使用镜像代理直接下载 ZIP 文件
+    var downloadUrl = SELF_ZIP_URLS[1]; // 优先使用国内镜像
+    chrome.tabs.create({ url: downloadUrl, active: true });
     chrome.notifications.clear('toolbox-self-update');
   }
 });

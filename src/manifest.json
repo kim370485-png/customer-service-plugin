@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "飞猪客服工具箱",
-  "version": "6.12",
+  "version": "6.13",
   "description": "飞猪国际机票客服提效工具集",
   "action": {
     "default_popup": "popup.html",
@@ -27,7 +27,8 @@
     "*://kefu.fliggy.com/*",
     "*://yida.alibaba-inc.com/*",
     "*://recall.alibaba-inc.com/*",
-    "*://raw.githubusercontent.com/*"
+    "*://raw.githubusercontent.com/*",
+    "*://ghfast.top/*"
   ],
   "declarative_net_request": {
     "rule_resources": [
