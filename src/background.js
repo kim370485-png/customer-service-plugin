@@ -334,25 +334,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 
 // ===== 扩展自身版本更新检查 =====
-var SELF_UPDATE_CHECK_URLS = [
-  'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json',
-  'https://gh-proxy.com/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json'
-];
-var SELF_DOWNLOAD_URLS = [
-  'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx',
-  'https://gh-proxy.com/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.crx'
-];
-var SELF_ZIP_URLS = [
-  'https://github.com/kim370485-png/customer-service-plugin/raw/main/extension.zip',
-  'https://gh-proxy.com/https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/extension.zip'
-];
-
-function tryFetch(urls, index) {
-  if (index >= urls.length) return Promise.reject(new Error('All URLs failed'));
-  return fetch(urls[index], { cache: 'no-cache' }).catch(function() {
-    return tryFetch(urls, index + 1);
-  });
-}
+var SELF_UPDATE_CHECK_URL = 'https://raw.githubusercontent.com/kim370485-png/customer-service-plugin/main/src/manifest.json';
+var SELF_REPO_URL = 'https://github.com/kim370485-png/customer-service-plugin';
 
 function checkSelfUpdate(force) {
   var currentVersion = chrome.runtime.getManifest().version;
@@ -367,7 +350,7 @@ function checkSelfUpdate(force) {
 
     chrome.storage.local.set({ selfUpdateLastCheck: now });
 
-    tryFetch(SELF_UPDATE_CHECK_URLS, 0)
+    fetch(SELF_UPDATE_CHECK_URL, { cache: 'no-cache' })
       .then(function(res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
@@ -380,12 +363,7 @@ function checkSelfUpdate(force) {
         if (remoteVersion && compareVersion(remoteVersion, currentVersion) > 0 && remoteVersion !== skipVersion) {
           console.log('[Toolbox] 发现新版本: ' + remoteVersion + ' (当前: ' + currentVersion + ')');
 
-          // 保存更新信息
-          chrome.storage.local.set({
-            selfUpdateAvailable: true,
-            selfRemoteVersion: remoteVersion,
-            selfDownloadUrl: SELF_DOWNLOAD_URLS[1]
-          });
+          chrome.storage.local.set({ selfUpdateAvailable: true, selfRemoteVersion: remoteVersion });
 
           // 弹出通知
           chrome.notifications.create('toolbox-self-update', {
@@ -407,22 +385,15 @@ function checkSelfUpdate(force) {
         }
       })
       .catch(function(err) {
-        var errorMsg = '[Toolbox] 自身更新检查失败: ' + err.message;
-        console.log(errorMsg);
-        // 如果是网络错误，尝试记录详细信息
-        if (err.message.indexOf('Failed to fetch') >= 0 || err.message.indexOf('NetworkError') >= 0) {
-          console.log('[Toolbox] 可能是网络问题，无法访问 GitHub。请检查网络连接或防火墙设置。');
-        }
+        console.log('[Toolbox] 自身更新检查失败: ' + err.message);
       });
   });
 }
 
-// 通知点击事件：打开下载页面（使用镜像加速）
+// 通知点击事件：打开 GitHub 仓库页面
 chrome.notifications.onClicked.addListener(function(notificationId) {
   if (notificationId === 'toolbox-self-update') {
-    // 使用镜像代理直接下载 ZIP 文件
-    var downloadUrl = SELF_ZIP_URLS[1]; // 优先使用国内镜像
-    chrome.tabs.create({ url: downloadUrl, active: true });
+    chrome.tabs.create({ url: SELF_REPO_URL, active: true });
     chrome.notifications.clear('toolbox-self-update');
   }
 });
