@@ -161,36 +161,81 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           TAG="v${VERSION}"
 
-          # Release notes with installation guide
-          NOTES=$(cat <<'ENDNOTES'
-## 下载
+          # Write release notes to a file to avoid shell escaping issues
+          cat > release-notes.md <<'ENDNOTES'
+## 📦 下载
 
-- **extension.zip** — 扩展安装包
-- **安装教程.html** — 安装教程（用浏览器打开）
+点击下方的 **extension.zip** 文件下载最新版安装包。
 
-## 快速安装
+---
 
-1. 下载 extension.zip，解压到固定位置（如 `D:\Tools\FliggyToolbox`）
-2. 打开 `chrome://extensions/`
-3. 右上角开启「开发者模式」
-4. 点击「加载已解压的扩展程序」→ 选择解压文件夹 → 确定
-5. 刷新工作页面
+## 🔧 安装教程（首次安装）
 
-## 更新
+**第 1 步：下载安装包**
+点击上方 **extension.zip** 文件，下载到电脑。
 
-收到更新通知后，点击通知 → 下载新版 extension.zip → 解压覆盖 → `chrome://extensions/` 刷新
+**第 2 步：解压到固定位置**
+把下载的 extension.zip 解压到一个**不会移动、不会删除**的地方，例如：
+- Windows：`D:\Tools\FliggyToolbox`
+- Mac：`~/Applications/FliggyToolbox`
+
+> ⚠️ 解压出来的文件夹**不能移动或删除**，否则扩展会失效。
+
+**第 3 步：打开 Chrome 扩展页面**
+在浏览器地址栏输入以下地址并回车：
+```
+chrome://extensions/
+```
+
+**第 4 步：开启开发者模式**
+在页面**右上角**，找到「开发者模式」开关，把它打开（变成蓝色）。
+
+**第 5 步：加载扩展**
+点击左上角「**加载已解压的扩展程序**」按钮 → 选择解压出来的文件夹 → 确定。
+
+**第 6 步：完成 ✅**
+刷新飞猪客服工作页面，扩展已生效。可以在浏览器右上角拼图图标里看到「飞猪客服工具箱」。
+
+---
+
+## 🔄 更新教程（有新版本时）
+
+当管理员发布新版本时，浏览器右下角会弹出通知：
+
+> **飞猪客服工具箱有新版本**
+> 发现新版本 X.XX（当前 X.XX），点击下载安装包并更新
+
+**操作步骤：**
+1. **点击通知** → 自动打开本下载页面
+2. **下载** → 点击下方 **extension.zip** 文件
+3. **解压覆盖** → 把新文件解压，**覆盖**之前安装的文件夹
+4. **刷新扩展** → 打开 `chrome://extensions/`，在「飞猪客服工具箱」卡片上点击**刷新按钮**（圆形箭头图标）
+
+---
+
+## ❓ 常见问题
+
+**Q：加载时提示"清单文件缺失或不可读取"？**
+A：选错文件夹了。确保选择的文件夹里**直接有 manifest.json**，而不是它的子文件夹。
+
+**Q：扩展突然消失了？**
+A：可能是解压的文件夹被移动或删除了。重新下载 zip，解压到固定位置，重新加载即可。
+
+**Q：Chrome 弹出"禁用开发者模式扩展程序"？**
+A：这是 Chrome 的安全提示，点击「**取消**」就可以继续使用，是正常现象。
+
+**Q：版本没有更新？**
+A：打开 `chrome://extensions/`，手动点击「更新」按钮。
 ENDNOTES
-          )
 
           # Create release (skip if already exists)
-          gh release create "$TAG" extension.zip 安装教程.html \
-            --title "v${VERSION}" \
-            --notes "$NOTES" \
+          gh release create "$TAG" extension.zip \
+            --title "v${VERSION} - 飞猪客服工具箱" \
+            --notes-file release-notes.md \
             --draft=false \
             2>/dev/null || echo "Release $TAG already exists, updating assets..."
 
-          # If release already existed, upload/overwrite the assets
+          # If release already existed, upload/overwrite the asset
           gh release upload "$TAG" extension.zip --clobber 2>/dev/null || true
-          gh release upload "$TAG" 安装教程.html --clobber 2>/dev/null || true
 
           echo "✓ Release $TAG ready"
